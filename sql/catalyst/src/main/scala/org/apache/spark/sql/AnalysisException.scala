@@ -76,9 +76,15 @@ class AnalysisException protected[sql] (
     newException
   }
 
-  override def getMessage: String = {
+  // Outputs the error message with the logical plan
+  // Used in EXPLAIN, or toString method
+  override def getLocalizedMessage: String = {
     val planAnnotation = Option(plan).flatten.map(p => s";\n$p").getOrElse("")
     getSimpleMessage + planAnnotation
+  }
+
+  override def getMessage: String = {
+    getSimpleMessage
   }
 
   // Outputs an exception without the logical plan.
